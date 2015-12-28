@@ -1,0 +1,42 @@
+include chipdef
+
+;
+; this should be common to all 18 series chips!
+;
+; pragma shared -- anything allocated in these ranges is shared
+;                  (aka, doesn't require page bits or BSR)
+;
+pragma shared 0x0000 - 0x007f
+pragma data   0x0000 - 0x00ff
+
+pragma target cpu  pic_16
+pragma target bank 0x0100
+
+pragma stack  31
+
+;
+; pic_isr_w isn't currently used but must be defined. Eventually
+; it will be needed.
+;
+var volatile byte _pic_isr_w shared at 0x0000
+var volatile byte _pic_accum shared at 0x0001
+
+;
+; new attribute : `shared'. Same meaning as above
+;
+var volatile byte   _ind0   shared AT 0x00ef
+var volatile byte   _pcl    shared AT 0x00f9
+var volatile byte   _pclath shared AT 0x00fa
+var volatile byte   _pclatu shared AT 0x00fb
+var volatile byte   _status shared AT 0x00d8
+var volatile byte   _fsr0l  shared AT 0x00e9
+var volatile byte   _fsr0h  shared AT 0x00ea
+var volatile word   _fsr0   shared AT 0x00e9
+var          byte*3 _tblptr shared AT 0x00f6
+var volatile byte   _tablat shared AT 0x00f5
+const        byte _z      = 2
+const        byte _dc     = 1
+const        byte _c      = 0
+const        byte _banked = 1 ; use BSR
+const        byte _access = 0 ; use access
+

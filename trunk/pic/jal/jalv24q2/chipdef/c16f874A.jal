@@ -1,0 +1,8 @@
+include c16f87xA
+
+pragma data  0x0020 - 0x007f, 0x00a0 - 0x00ff
+pragma code  4096
+pragma eeprom 0x2100, 128
+
+pragma target chip 16f874A
+

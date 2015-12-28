@@ -1,0 +1,54 @@
+include chipdef
+;
+; chip definition for the 16f505
+;
+pragma target cpu  pic_12
+pragma target bank 0x020
+pragma target page 0x200
+pragma target chip 16f505
+
+pragma data  0x0008-0x001f,
+             0x0030-0x003f,
+             0x0050-0x005f,
+             0x0070-0x007f
+pragma code  1024
+var volatile byte _ind    AT {0x0000, 0x0020, 0x0040, 0x0060}
+var volatile byte _pcl    AT {0x0002, 0x0022, 0x0042, 0x0062}
+var volatile byte _status AT {0x0003, 0x0023, 0x0043, 0x0063} = 0
+  const        byte _z      = 2
+  const        byte _c      = 0
+var volatile byte _fsr    AT {0x0004, 0x0024, 0x0044, 0x0064} = 0
+
+var volatile byte _pic_accum AT { 0x0008, 0x0028, 0x0048, 0x0068 }
+
+const word _fuses         = 0x0fff ; default value
+const word _fuse_base     = 0x0fff ; where to put it
+
+pragma stack 2
+
+pragma fuse_def mclr 0b_10_0000 {
+  on  = 0b_10_0000
+  off = 0b_00_0000
+}
+
+pragma fuse_def protection 0b_01_0000 {
+  on  = 0b_00_0000
+  off = 0b_01_0000
+}
+
+pragma fuse_def watchdog 0b_00_1000 {
+  on  = 0b_00_1000
+  off = 0b_00_0000
+}
+
+pragma fuse_def osc  0b_00_0111 {
+  external_clkout = 0b_00_111
+  external_rb4    = 0b_00_110
+  internal_clkout = 0b_00_101
+  internal_rb4    = 0b_00_100
+  ec_rb4          = 0b_00_011
+  hs              = 0b_00_010
+  xt              = 0b_00_001
+  lp              = 0b_00_000
+}
+

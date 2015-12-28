@@ -1,0 +1,108 @@
+include chipdef
+;
+; chip definition for the 16f8x series; corrected version for jalV2.0 may24/06
+;
+pragma target cpu  pic_14
+pragma target bank 0x0080
+pragma target page 0x0800
+
+var volatile byte _ind    AT {0x0000, 0x0080, 0x0100, 0x0180}
+var volatile byte _pcl    AT {0x0002, 0x0082, 0x0102, 0x0182}
+var volatile byte _status AT {0x0003, 0x0083, 0x0103, 0x0183}
+var volatile byte _fsr    AT {0x0004, 0x0084, 0x0104, 0x0184}
+const        byte _irp    = 7
+const        byte _rp1    = 6
+const        byte _rp0    = 5
+const        byte _not_to = 4
+const        byte _not_pd = 3
+const        byte _z      = 2
+const        byte _dc     = 1
+const        byte _c      = 0
+var volatile byte _pclath AT {0x000a, 0x008a, 0x010a, 0x018a}
+
+pragma stack  8
+const word _fuses_ct             = 2
+const word _fuses[_fuses_ct]     = {0x3fff, 0x3fff} ; default value
+const word _fuse_base[_fuses_ct] = {0x2007, 0x2008} ; where to put it
+
+;
+; format of fuse_def : key mask {option=cexpr ...}
+;
+
+; configuration word1 register, adr0x2007
+pragma fuse_def protection 0b10_0000_0000_0000 {
+  on  = 0b00_0000_0000_0000
+  off = 0b10_0000_0000_0000
+}
+
+pragma fuse_def ccp1       0b01_0000_0000_0000 {
+  rb3 = 0b00_0000_0000_0000
+  rb0 = 0b01_0000_0000_0000
+}
+
+pragma fuse_def debug      0b00_1000_0000_0000 {
+  on  = 0b00_0000_0000_0000
+  off = 0b00_1000_0000_0000
+}
+
+pragma fuse_def wrt      0b00_0110_0000_0000 {
+  off     = 0b00_0110_0000_0000  ; write protection off
+  on_00ff = 0b00_0100_0000_0000  ; 0000-00ff write protected
+  on_07ff = 0b00_0010_0000_0000  ; 0000-07ff write protected
+  on_0fff = 0b00_0000_0000_0000  ; 0000-0fff write protected
+}
+
+pragma fuse_def cdp        0b00_0001_0000_0000 {
+  on  = 0b00_0000_0000_0000
+  off = 0b00_0001_0000_0000
+}
+
+pragma fuse_def lvp        0b00_0000_1000_0000 {
+  on  = 0b00_0000_1000_0000
+  off = 0b00_0000_0000_0000
+}
+
+pragma fuse_def bor        0b00_0000_0100_0000 {
+  on  = 0b00_0000_0100_0000
+  off = 0b00_0000_0000_0000
+}
+
+pragma fuse_def mclr       0b00_0000_0010_0000 {
+  on  = 0b00_0000_0010_0000
+  off = 0b00_0000_0000_0000
+}
+
+pragma fuse_def powerup    0b00_0000_0000_1000 {
+  off = 0b00_0000_0000_1000
+  on  = 0b00_0000_0000_0000
+}
+
+pragma fuse_def watchdog   0b00_0000_0000_0100 {
+  off = 0b00_0000_0000_0000
+  on  = 0b00_0000_0000_0100
+}
+
+pragma fuse_def osc        0b00_0000_0001_0011 {
+  lp       = 0b0000000000_0000
+  xt       = 0b0000000000_0001
+  hs       = 0b0000000000_0010
+  ecio     = 0b0000000000_0011
+  int_io   = 0b0000000001_0000
+  int_clko = 0b0000000001_0001
+  ext_io   = 0b0000000001_0010
+  ext_clko = 0b0000000001_0011
+}
+
+; configuration word2 register, adr0x2008
+
+pragma fuse_def IESO: 1 0b00_0000_0000_0010 {
+  on  = 0b00_0000_0000_0010
+  off = 0b00_0000_0000_0000
+}
+
+pragma fuse_def FCMEN:1 0b00_0000_0000_0001 {
+  on  = 0b00_0000_0000_0001
+  off = 0b00_0000_0000_0000
+}
+
+

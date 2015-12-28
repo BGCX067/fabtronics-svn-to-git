@@ -1,0 +1,12 @@
+include c18fxx20
+
+pragma data 0x0100 - 0x01ff
+pragma data 0x0200 - 0x02ff
+pragma data 0x0300 - 0x03ff
+pragma data 0x0400 - 0x04ff
+pragma data 0x0500 - 0x05ff
+
+pragma target chip 18f4520
+pragma code 32768
+
+

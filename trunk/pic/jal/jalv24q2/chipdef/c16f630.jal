@@ -1,0 +1,76 @@
+include chipdef
+;
+; chip definition for the 16f630/16f676
+;
+pragma target cpu  pic_14
+pragma target bank 0x0080
+pragma target page 0x0800
+
+pragma data   0x0020-0x005f
+pragma code   1024
+pragma eeprom 0x2100, 128
+pragma stack  8
+
+pragma target chip 16f630
+
+var volatile byte _pic_accum at { 0x0020 }
+var volatile byte _pic_isr_w at { 0x0021 }
+
+var volatile byte _ind    AT {0x0000}
+var volatile byte _pcl    AT {0x0002}
+var volatile byte _status AT {0x0003}
+var volatile byte _fsr    AT {0x0004}
+  const        byte _irp    = 7
+  const        byte _rp1    = 6
+  const        byte _rp0    = 5
+  const        byte _not_to = 4
+  const        byte _not_pd = 3
+  const        byte _z      = 2
+  const        byte _dc     = 1
+  const        byte _c      = 0
+var volatile byte _pclath AT {0x000a}
+
+const word _fuses         = 0x3fff ; default value
+const word _fuse_base     = 0x2007 ; where to put it
+
+pragma fuse_def data_protection 0b_0001_0000_0000 {
+  on  = 0b_0000_0000_0000_0000
+  off = 0b_0000_0001_0000_0000
+}
+
+pragma fuse_def protection 0b_0000_1000_0000 {
+  on  = 0b_0000_0000_0000_0000
+  off = 0b_0000_0000_1000_0000
+}
+
+pragma fuse_def boden 0b_0000_0100_0000 { ; brown-out detect enable
+  on  = 0b_0000_0000_0100_0000
+  off = 0b_0000_0000_0000_0000
+}
+
+pragma fuse_def mclr 0b_0000_0000_0010_0000 {
+  on  = 0b_0000_0000_0010_0000
+  off = 0b_0000_0000_0000_0000
+}
+
+pragma fuse_def powerup 0b_0000_0000_0001_0000 {
+  on  = 0b_0000_0000_0000_0000
+  off = 0b_0000_0000_0001_0000
+}
+
+pragma fuse_def watchdog 0b_0000_0000_0000_1000 {
+  on  = 0b_0000_0000_0000_1000
+  off = 0b_0000_0000_0000_0000
+}
+
+pragma fuse_def osc 0b_0000_0000_0000_0111 {
+  rc_clkout  = 0b_0000_0000_0000_0111
+  rc         = 0b_0000_0000_0000_0110
+  int_clkout = 0b_0000_0000_0000_0101
+  int        = 0b_0000_0000_0000_0100
+  ec         = 0b_0000_0000_0000_0011
+  hs         = 0b_0000_0000_0000_0010
+  xt         = 0b_0000_0000_0000_0001
+  lp         = 0b_0000_0000_0000_0000
+}
+

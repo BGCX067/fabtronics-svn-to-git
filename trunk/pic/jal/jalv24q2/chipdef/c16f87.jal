@@ -1,0 +1,2 @@
+include c16f8x
+pragma target chip 16f87

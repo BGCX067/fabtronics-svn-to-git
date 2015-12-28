@@ -1,0 +1,24 @@
+include c18xxxxx
+
+const byte _fuses[8]      = {
+                             0b_1111_1111, ; config1l
+                             0b_1110_0111, ; config1h
+                             0b_0000_1111, ; config2l
+                             0b_0000_1111, ; config2h *DO NOT USE*
+                             0b_1111_1111, ; config3l *DO NOT USE*
+                             0b_0000_0001, ; config3h
+                             0b_0000_0011, ; config4l
+                             0b_1111_1111  ; config4h *DO NOT USE*
+                            }
+
+const dword _fuse_base[8] = {
+                             0x0030_0000,   ; where to put it
+                             0x0030_0001,
+                             0x0030_0002,
+                             0x0030_0003,
+                             0x0030_0004,
+                             0x0030_0005,
+                             0x0030_0006,
+                             0x0030_0007
+                            }
+

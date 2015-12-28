@@ -1,0 +1,7 @@
+include c18cxx2
+
+pragma data 0x0100 - 0x01ff
+
+pragma target chip 18c242
+pragma code 16384
+

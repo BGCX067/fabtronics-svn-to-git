@@ -1,0 +1,82 @@
+include chipdef
+
+pragma target cpu  pic_14
+pragma target bank 0x0080
+pragma target page 0x0800
+
+var volatile byte _pic_accum at { 0x007e, 0x00fe, 0x017e, 0x01fe }
+var volatile byte _pic_isr_w at { 0x007f, 0x00ff, 0x017f, 0x01ff }
+;
+; chip definition for the 16f87xA series
+;
+
+var volatile byte _ind    AT {0x0000, 0x0080, 0x0100, 0x0180}
+var volatile byte _pcl    AT {0x0002, 0x0082, 0x0102, 0x0182}
+var volatile byte _status AT {0x0003, 0x0083, 0x0103, 0x0183}
+var volatile byte _fsr    AT {0x0004, 0x0084, 0x0104, 0x0184}
+const        byte _irp    = 7
+const        byte _rp1    = 6
+const        byte _rp0    = 5
+const        byte _not_to = 4
+const        byte _not_pd = 3
+const        byte _z      = 2
+const        byte _dc     = 1
+const        byte _c      = 0
+var volatile byte _pclath AT {0x000a, 0x008a, 0x010a, 0x018a}
+
+pragma stack  8
+
+const word _fuses         = 0x3fff ; default value
+const word _fuse_base     = 0x2007 ; where to put it
+
+;
+; format of fuse_def : key mask {option=cexpr ...}
+;
+pragma fuse_def protection 0b10000000000000 {
+  on  = 0b00000000000000
+  off = 0b10000000000000
+}
+
+pragma fuse_def WRT 0b00011000000000 {
+  on  = 0b00000000000000
+  off = 0b00011000000000
+}
+
+pragma fuse_def debug      0b00100000000000 {
+  on  = 0b00000000000000
+  off = 0b00100000000000
+}
+
+pragma fuse_def cdp        0b00000100000000 {
+  on  = 0b00000000000000
+  off = 0b00000100000000
+}
+
+pragma fuse_def lvp        0b00000010000000 {
+  on  = 0b00000010000000
+  off = 0b00000000000000
+}
+
+pragma fuse_def bor        0b00000001000000 {
+  on  = 0b00000001000000
+  off = 0b00000000000000
+}
+
+pragma fuse_def powerup    0b00000000001000 {
+  off = 0b00000000001000
+  on  = 0b00000000000000
+}
+
+pragma fuse_def watchdog   0b00000000000100 {
+  off = 0b00000000000000
+  on  = 0b00000000000100
+}
+
+pragma fuse_def osc        0b00000000000011 {
+  lp  = 0b00000000000000
+  xt  = 0b00000000000001
+  hs  = 0b00000000000010
+  rc  = 0b00000000000011
+}
+
+

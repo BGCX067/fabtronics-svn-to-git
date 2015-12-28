@@ -1,0 +1,10 @@
+include c16f81x
+
+pragma data   0x0020-0x007f, 0x00a0-0x00bf
+pragma code   1024
+pragma eeprom 0x2100, 128
+
+pragma target chip c16f818
+
+var volatile byte _pic_accum at { 0x007e, 0x00fe }
+var volatile byte _pic_isr_w at { 0x007f, 0x00ff }
